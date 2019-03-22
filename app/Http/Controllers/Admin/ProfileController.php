@@ -14,10 +14,23 @@ public function add()
 {
   return view('admin.profile.create');
 }
-public function create()
+
+public function create(Request $request)
 {
+  $this->validate($request, Profile::$rules);
+
+  $profile = new Profile;
+  $form = $request->all();
+
+unset($from['_token']);
+
+$profile->fill($from);
+$profile->save();
+
   return redirect('admin/profile/create');
 }
+
+
 
 public function edit()
 {
