@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\News;
+
 class NewsController extends Controller
 {
     public function add()
@@ -17,7 +19,7 @@ class NewsController extends Controller
       $this->validate($request, News::$rules);
 
       $news = new News;
-      $from = $request->all();
+      $form = $request->all();
 
       if (isset($form['image'])){
         $path = $request->file('image')->store('public/image');
@@ -31,7 +33,7 @@ class NewsController extends Controller
 
       $news->fill($form);
       $news->save();
-      
+
       return redirect('admin/news/create');
     }
 }

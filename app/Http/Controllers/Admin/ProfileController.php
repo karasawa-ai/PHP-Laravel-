@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Profile;
+
 class ProfileController extends Controller
 {
     //
@@ -22,9 +24,9 @@ public function create(Request $request)
   $profile = new Profile;
   $form = $request->all();
 
-unset($from['_token']);
+unset($form['_token']);
 
-$profile->fill($from);
+$profile->fill($form);
 $profile->save();
 
   return redirect('admin/profile/create');
