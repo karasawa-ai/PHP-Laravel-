@@ -17,9 +17,9 @@ class CreateProfilesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('gender');
-            $trble->string('hobby');
-            $trble->string('introduction');
-            
+            $table->string('hobby');
+            $table->string('introduction');
+
             $table->timestamps();
         });
     }
