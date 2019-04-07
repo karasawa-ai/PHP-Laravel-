@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\Profile;
 
 class ProfileController extends Controller
@@ -34,15 +33,27 @@ $profile->save();
 
 
 
-public function edit()
+public function edit(Request $request)
 {
-  return view('admin.profile.edit');
+  $profile = Profile::find($request->id);
+  if (empty($profile)) {
+    abort(404);
+  }
+  return view('admin.profile.edit', ['profile_form' => $profile]);
 }
 
-public function update()
+public function update(Request $request)
 {
+  $this->validate($request, Profile::$rules);
+  $profile = Profile::find($request->id);
+  $profile_form = $request->all();
+
+  unset($profile_form['_token']);
+  $profile->fill($profile_form)->save();
+
   return redirect('admin/profile/edit');
 }
+
 
 }
 ?>

@@ -34,7 +34,7 @@
               <input type="text" class="form-control" name="hobby" value="{{ old('hobby') }}">
             </div>
           </div>
-          <div class="from-group row">
+          <div class="form-group row">
             <label class="col-md-2" for="introduction">自己紹介欄</label>
             <div class="col-md-10">
               <textarea class="form-control" name="introduction" rows="20">{{ old('introduction') }}</textarea>
@@ -42,7 +42,7 @@
           </div>
         {{ csrf_field() }}
         <input type="submit" class="btn btn-primary" value="更新">
-      </from>
+      </form>
      </div>
    </div>
  </div>
