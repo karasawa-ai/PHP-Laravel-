@@ -34,8 +34,8 @@
               設定中: {{ $news_form->image_path }}
             </div>
             <div class="form-check">
-              <label class="from-check-label">
-                <input type="checkbox" class="from-check-input" name="remove" value="true">画像を削除
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="remove" value="true">画像を削除
               </label>
             </div>
           </div>
@@ -48,6 +48,18 @@
           </div>
         </div>
       </form>
+      <div class="row mt-5">
+       <div class="col-md-4 mx-auto">
+        <h2>編集履歴</h2>
+         <ul class="list-group">
+           @if ($news_form->histories != NULL)
+            @foreach ($news_form->histories as $history)
+            <li class="list-group-item">{{ $history->edited_at }}</li>
+          @endforeach
+          @endif
+         </ul>
+       </div>
+     </div>
     </div>
   </div>
 </div>

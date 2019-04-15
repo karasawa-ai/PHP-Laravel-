@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\News;
+use App\History;
+use Carbon\Carbon;
 
 class NewsController extends Controller
 {
@@ -19,7 +21,7 @@ class NewsController extends Controller
       $news = new News;
       $form = $request->all();
 
-      if (isset($form['image'])) {
+    if (isset($form['image'])) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
       }else{
@@ -29,8 +31,7 @@ class NewsController extends Controller
       unset($form['_token']);
       unset($form['image']);
 
-      $news->fill($form);
-      $news->save();
+      $news->fill($news_form)->save();
 
       return redirect('admin/news/create');
     }
@@ -38,12 +39,12 @@ class NewsController extends Controller
     public function index(Request $request)
     {
       $cond_title = $request->cond_title;
-      if($cond_title != ''){
-        $posts = News::where('title', $cond_title)->get();
-      }else{
-        $posts = News::all();
-      }
-      return view('admin.news.index',['posts' => $posts, 'cond_title' => $cond_title]);
+       if ($cond_title != '') {
+           $posts = News::where('title', $cond_title)->get();
+       } else {
+           $posts = News::all();
+       }
+       return view('admin.news.index', ['posts' => $posts, 'cond_title' => $cond_title]);
     }
 
     public function edit(Request $request)
@@ -59,16 +60,22 @@ class NewsController extends Controller
       $this->validate($request, News::$rules);
       $news = News::find($request->id);
       $news_form = $request->all();
-      if (isset($news_form['image'])){
+      if (isset($news_form['image'])) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
         unset($news_form['image']);
-      } elseif(isset($request->remove)) {
+      } elseif (0 == strcmp($request->remove, 'true')) {
         $news->image_path = null;
-        unset($news_form['remove']);
       }
+
       unset($news_form['_token']);
+      unset($news_form['remove']);
       $news->fill($news_form)->save();
+
+      $history = new History;
+      $history->news_id = $news->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
 
       return redirect('admin/news');
     }
