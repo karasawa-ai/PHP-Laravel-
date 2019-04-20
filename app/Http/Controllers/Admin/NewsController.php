@@ -19,17 +19,17 @@ class NewsController extends Controller
 
       $this->validate($request, News::$rules);
       $news = new News;
-      $form = $request->all();
+      $news_form = $request->all();
 
-    if (isset($form['image'])) {
+    if (isset($news_form['image'])) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
       }else{
         $news->image_path = null;
       }
 
-      unset($form['_token']);
-      unset($form['image']);
+      unset($news_form['_token']);
+      unset($news_form['image']);
 
       $news->fill($news_form)->save();
 
@@ -63,11 +63,11 @@ class NewsController extends Controller
       if (isset($news_form['image'])) {
         $path = $request->file('image')->store('public/image');
         $news->image_path = basename($path);
-        unset($news_form['image']);
       } elseif (0 == strcmp($request->remove, 'true')) {
         $news->image_path = null;
       }
 
+      unset($news_form['image']);
       unset($news_form['_token']);
       unset($news_form['remove']);
       $news->fill($news_form)->save();
